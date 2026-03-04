@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import healthRoutes from './routes/healthRoutes.js'
 import devSeedRoutes from './routes/devSeedRoutes.js'
+import authRoutes from './routes/authRoutes.js'
 import { connectDB } from './config/db.js'
 
 dotenv.config()
@@ -19,6 +20,7 @@ app.use(express.json())
 
 app.use('/api', healthRoutes)
 app.use('/api', devSeedRoutes)
+app.use('/api', authRoutes)
 
 app.get('/', (_req, res) => {
   res.status(200).json({ message: 'DevTrackr API running' })
