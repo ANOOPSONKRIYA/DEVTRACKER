@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const sections = [
-  { label: 'Overview', detail: 'Summary and activity', active: true },
-  { label: 'Daily Logs', detail: 'Track study consistency', active: false },
-  { label: 'DSA Tracker', detail: 'Problems and status', active: false },
-  { label: 'Projects', detail: 'Portfolio progress', active: false },
-  { label: 'Analytics', detail: 'Performance insights', active: false }
+  { label: 'Overview', detail: 'Summary and activity', path: '/dashboard' },
+  { label: 'Daily Logs', detail: 'Track study consistency', path: '/daily-logs' },
+  { label: 'DSA Tracker', detail: 'Problems and status', path: '/dsa-tracker' },
+  { label: 'Projects', detail: 'Portfolio progress', path: '/projects' },
+  { label: 'Analytics', detail: 'Performance insights', path: '/analytics' }
 ]
 
 function sectionCode(label) {
@@ -56,6 +57,8 @@ function SearchIcon({ className }) {
 }
 
 export default function DashboardLayout({ user, onLogout, pageTitle, pageSubtitle, children }) {
+  const navigate = useNavigate()
+  const location = useLocation()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isDesktopSidebarCollapsed, setIsDesktopSidebarCollapsed] = useState(false)
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
@@ -78,6 +81,14 @@ export default function DashboardLayout({ user, onLogout, pageTitle, pageSubtitl
 
   function toggleMobileSearch() {
     setIsMobileSearchOpen((current) => !current)
+  }
+
+  function isSectionActive(path) {
+    if (path === '/dashboard') {
+      return location.pathname === '/dashboard'
+    }
+
+    return location.pathname.startsWith(path)
   }
 
   return (
@@ -176,10 +187,13 @@ export default function DashboardLayout({ user, onLogout, pageTitle, pageSubtitl
               <button
                 key={section.label}
                 type="button"
-                onClick={closeMobileMenu}
+                onClick={() => {
+                  navigate(section.path)
+                  closeMobileMenu()
+                }}
                 className={[
                   'w-full rounded-lg border px-2.5 py-2 text-left transition',
-                  section.active
+                  isSectionActive(section.path)
                     ? 'border-[#315f52] bg-[#10a37f]/20 text-[#85f0d8]'
                     : 'border-transparent text-[#c9c9c9] hover:border-[#2e2e2e] hover:bg-[#252525] hover:text-[#ececec]',
                   isDesktopSidebarCollapsed ? 'flex items-center justify-center' : ''

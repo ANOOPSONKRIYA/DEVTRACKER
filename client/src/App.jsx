@@ -1,8 +1,12 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useAuth } from './hooks/useAuth'
+import AnalyticsPage from './pages/AnalyticsPage'
+import DailyLogsPage from './pages/DailyLogsPage'
+import DSATrackerPage from './pages/DSATrackerPage'
 import DashboardPage from './pages/DashboardPage'
 import LoginPage from './pages/LoginPage'
+import ProjectsPage from './pages/ProjectsPage'
 import RegisterPage from './pages/RegisterPage'
 
 export default function App() {
@@ -33,6 +37,38 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/daily-logs"
+            element={
+              <ProtectedRoute>
+                <DailyLogsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dsa-tracker"
+            element={
+              <ProtectedRoute>
+                <DSATrackerPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/projects"
+            element={
+              <ProtectedRoute>
+                <ProjectsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute>
+                <AnalyticsPage />
               </ProtectedRoute>
             }
           />

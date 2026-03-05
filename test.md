@@ -169,3 +169,97 @@ Test 8: Ownership protection check
 Test 9: Auth protection check
 - Call any /api/daily-logs endpoint without Bearer token
 - Expected: 401 Missing or invalid Authorization header
+
+Day 7 Test Plan - Daily Logs Frontend
+
+Prerequisites
+- Start backend: cd server && npm install && npm run dev
+- Start frontend: cd client && npm install && npm run dev
+- Login and open http://localhost:5173/dashboard
+
+Test 1: Daily Logs module renders
+- Expected: Section title "Daily Logs" is visible on dashboard
+- Expected: Date, Hours, Description, Tags, Links form fields are visible
+- Expected: "Logs List" subsection is visible
+
+Test 2: Create daily log from UI
+- Fill Date, Hours, Description and optional Tags/Links
+- Click "Add Log"
+- Expected: Success message "Daily log created successfully"
+- Expected: New log appears at top of logs list
+
+Test 3: Client validation
+- Submit with missing Date or Hours or Description
+- Expected: Error message "Date, hours, and description are required"
+
+Test 4: Edit daily log flow
+- Click "Edit" on an existing log
+- Expected: Form is populated with selected log values
+- Update hours or description and click "Update Log"
+- Expected: Success message "Daily log updated successfully"
+- Expected: Updated values visible in logs list
+
+Test 5: Cancel edit flow
+- Enter edit mode on a log
+- Click "Cancel Edit"
+- Expected: Form resets to empty state
+- Expected: Submit button text returns to "Add Log"
+
+Test 6: Delete daily log flow
+- Click "Delete" on a log and confirm dialog
+- Expected: Success message "Daily log deleted"
+- Expected: Log is removed from list
+
+Test 7: Links rendering in logs list
+- Create a log with one or more valid links
+- Expected: Links are rendered as clickable anchors in that log card
+
+Test 8: Persistence after refresh
+- Create at least one log
+- Refresh dashboard page
+- Expected: Logs are fetched again from API and still visible in list
+
+Test 9: End-to-end CRUD verification
+- Create a log, edit it, then delete it
+- Expected: All three operations succeed via UI without manual API calls
+
+Module Pages Test Plan - Daily Logs, DSA, Projects, Analytics
+
+Prerequisites
+- Start backend: cd server && npm install && npm run dev
+- Start frontend: cd client && npm install && npm run dev
+- Login and verify sidebar routes are accessible
+
+Test 1: Sidebar page navigation
+- Click Overview, Daily Logs, DSA Tracker, Projects, Analytics from sidebar
+- Expected: URL updates to /dashboard, /daily-logs, /dsa-tracker, /projects, /analytics
+- Expected: Active nav item highlight follows current page
+
+Test 2: Daily Logs page calendar/date-time behavior
+- Open /daily-logs
+- Expected: Date input is datetime-local picker
+- Expected: Date-time is auto-filled with current local date/time on initial load and after successful submit
+
+Test 3: DSA Tracker CRUD
+- Open /dsa-tracker
+- Add DSA entry with problem name + platform + difficulty + status
+- Expected: Entry appears in list
+- Edit the entry and save
+- Expected: Updated details appear
+- Delete the entry
+- Expected: Entry removed from list
+
+Test 4: Projects CRUD
+- Open /projects
+- Add project with title, github URL, optional tech stack/live URL
+- Expected: Project card appears with links
+- Edit and update project
+- Expected: Changes reflect in card
+- Delete project
+- Expected: Card removed
+
+Test 5: Analytics data view
+- Open /analytics
+- Expected: Metrics cards render (total logs, total hours, DSA solved, projects)
+- Expected: Weekly hours trend bars render
+- Expected: DSA difficulty distribution bars render

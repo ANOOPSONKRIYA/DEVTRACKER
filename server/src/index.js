@@ -5,6 +5,9 @@ import healthRoutes from './routes/healthRoutes.js'
 import devSeedRoutes from './routes/devSeedRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 import dailyLogRoutes from './routes/dailyLogRoutes.js'
+import dsaRoutes from './routes/dsaRoutes.js'
+import projectRoutes from './routes/projectRoutes.js'
+import analyticsRoutes from './routes/analyticsRoutes.js'
 import { connectDB } from './config/db.js'
 
 dotenv.config()
@@ -55,6 +58,9 @@ app.use('/api', healthRoutes)
 app.use('/api', devSeedRoutes)
 app.use('/api', authRoutes)
 app.use('/api', dailyLogRoutes)
+app.use('/api', dsaRoutes)
+app.use('/api', projectRoutes)
+app.use('/api', analyticsRoutes)
 
 app.get('/', (_req, res) => {
   res.status(200).json({ message: 'DevTrackr API running' })
