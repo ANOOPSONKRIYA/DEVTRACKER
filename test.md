@@ -111,3 +111,61 @@ Test 6: Logout regression check
 Test 7: Protected route regression check
 - After logout, navigate to http://localhost:5173/dashboard
 - Expected: Redirect to /login
+
+Day 6 Test Plan - Daily Logs Backend
+
+Prerequisites
+- Start backend: cd server && npm install && npm run dev
+- Ensure API is running on http://localhost:5000
+- Register or login to get JWT token from /api/auth/register or /api/auth/login
+- Use Authorization header on all daily-log endpoints: Bearer <token>
+
+Sample payload (required fields)
+- {
+	"date": "2026-03-05",
+	"hours": 3.5,
+	"description": "Solved arrays problems and updated dashboard layout",
+	"tags": ["dsa", "frontend"],
+	"links": ["https://github.com/example/repo/pull/1"]
+}
+
+Test 1: Create daily log
+- POST http://localhost:5000/api/daily-logs
+- Expected: 201 Created
+- Expected: Response has message "Daily log created successfully" and dailyLog object with id
+
+Test 2: Validation check for missing required fields
+- POST /api/daily-logs with missing date or hours or description
+- Expected: 400 Bad Request with field-specific message
+
+Test 3: Validation check for invalid links
+- POST /api/daily-logs with links: ["not-a-url"]
+- Expected: 400 Bad Request with validation message for links
+
+Test 4: List user daily logs
+- GET http://localhost:5000/api/daily-logs
+- Expected: 200 OK
+- Expected: Returns only logs for authenticated user in dailyLogs array sorted by date desc
+
+Test 5: Get single daily log by id
+- GET http://localhost:5000/api/daily-logs/:logId
+- Expected: 200 OK and matching dailyLog
+
+Test 6: Update daily log
+- PUT http://localhost:5000/api/daily-logs/:logId with body { "hours": 4, "tags": ["dsa", "api"] }
+- Expected: 200 OK
+- Expected: message "Daily log updated successfully"
+
+Test 7: Delete daily log
+- DELETE http://localhost:5000/api/daily-logs/:logId
+- Expected: 200 OK
+- Expected: message "Daily log deleted successfully"
+
+Test 8: Ownership protection check
+- Login as User A and create a daily log
+- Login as User B and try GET/PUT/DELETE that same log id
+- Expected: 404 Daily log not found (no cross-user access)
+
+Test 9: Auth protection check
+- Call any /api/daily-logs endpoint without Bearer token
+- Expected: 401 Missing or invalid Authorization header
