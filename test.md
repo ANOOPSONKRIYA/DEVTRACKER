@@ -65,3 +65,49 @@ Test 9: Public route guard for authenticated user
 Test 10: Invalid credentials
 - Try login with wrong password
 - Expected: Error message "Invalid email or password"
+
+Day 5 Test Plan - Dashboard Shell
+
+Prerequisites
+- Start backend: cd server && npm install && npm run dev
+- Start frontend: cd client && npm install && npm run dev
+- Login with a valid account and open http://localhost:5173/dashboard
+
+Test 1: Dashboard shell renders
+- Expected: Sidebar is visible on desktop with items Overview, Daily Logs, DSA Tracker, Projects, Analytics
+- Expected: Topbar is visible with date label and Welcome text showing user name and email
+- Expected: Logout button is visible in topbar
+
+Test 2: Placeholder metric cards render
+- Expected: 4 metric cards are visible
+- Expected card titles: Current Streak, Hours This Week, DSA Solved, Projects Tracked
+- Expected hint text exists on each card (Connects on Day 8/13/10/12)
+
+Test 3: Protected content section remains visible
+- Expected: Section title "Protected API check" is visible
+- Expected: Protected API response message eventually replaces "Loading protected data..."
+
+Test 4: Mobile menu interaction
+- Open browser devtools and switch to a mobile viewport (for example 390x844)
+- Expected: Sidebar is hidden by default and Menu button is visible in topbar
+- Tap Menu
+- Expected: Sidebar slides in from left and overlay appears
+- Tap outside sidebar on overlay
+- Expected: Sidebar closes
+
+Test 5: Responsive layout behavior
+- At desktop width (>= 1280px)
+- Expected: Metric cards appear in a single row of 4 columns
+- At tablet width (~768px)
+- Expected: Metric cards wrap to 2 columns
+- At mobile width (< 640px)
+- Expected: Metric cards appear in 1 column and content remains readable without horizontal overflow
+
+Test 6: Logout regression check
+- Click Logout from dashboard topbar
+- Expected: Redirect to /login
+- Expected: localStorage keys devtrackr_auth_token and devtrackr_auth_user are removed
+
+Test 7: Protected route regression check
+- After logout, navigate to http://localhost:5173/dashboard
+- Expected: Redirect to /login

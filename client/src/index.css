@@ -3,13 +3,32 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --bg-page: #212121;
+  --text-primary: #ececec;
+  --text-muted: #a6a6a6;
+  --surface-primary: #171717;
+  --surface-secondary: #1f1f1f;
+  --border-primary: #303030;
+  --brand: #10a37f;
+  --brand-hover: #0e8f70;
+  font-family: 'Sohne', 'Segoe UI', 'Helvetica Neue', sans-serif;
   color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background: #0b1020;
-  color: #f3f4f6;
+  background:
+    radial-gradient(circle at 20% 0%, #2b2b2b 0%, transparent 35%),
+    radial-gradient(circle at 80% 100%, #262626 0%, transparent 30%),
+    var(--bg-page);
+  color: var(--text-primary);
+}
+
+#root {
+  min-height: 100vh;
 }
