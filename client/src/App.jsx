@@ -1,11 +1,39 @@
+import { Navigate, Route, Routes } from 'react-router-dom'
+import ProtectedRoute from './components/ProtectedRoute'
+import { useAuth } from './hooks/useAuth'
+import DashboardPage from './pages/DashboardPage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+
 export default function App() {
+  const { isAuthenticated } = useAuth()
+
   return (
-    <main className="min-h-screen px-6 py-10">
-      <div className="mx-auto max-w-3xl rounded-2xl border border-slate-700 bg-slate-900/70 p-8 shadow-xl">
-        <h1 className="text-3xl font-bold text-indigo-300">DevTrackr</h1>
-        <p className="mt-3 text-slate-300">
-          Frontend baseline is ready with Vite + React + Tailwind.
-        </p>
+    <main className="min-h-screen bg-slate-950 px-4 py-8 text-slate-100">
+      <div className="mx-auto w-full max-w-xl">
+        <Routes>
+          <Route
+            path="/"
+            element={<Navigate to={isAuthenticated ? '/dashboard' : '/login'} replace />}
+          />
+          <Route
+            path="/login"
+            element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />}
+          />
+          <Route
+            path="/register"
+            element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <RegisterPage />}
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </div>
     </main>
   )
